@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            GPS
+        </title>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    
+    <script>
+       
+        $(function() {
+            function addGpsd(gpsd) {
+                $('#gpsds').append('<li>' + gpsd.location + '</li><li>' + gpsd.device_id + '</ll><li>' + gpsd.estatus + '</li><li>' + gpsd.alaram  + '</li><li>' + gpsd.lat  + '</li><li>' + gpsd.lng  );
+            }
+            
+            $('#new_gpsd').submit(function(e) { 
+                $.post('/gpsds', $(this).serialize(), addGpsd);
+                this.reset();
+                e.preventDefault();
+                
+            });
+            
+            $.getJSON('/gpsds', function(gpsds) {
+                $.each(gpsds, function() { addgpsd(this); });
+            });
+        });
+    
+    </script>
+    
+    </head>
+    <body>
+        <div id = "container" >
+            <form id = "new_gpsd" >
+                Location :<input type = "text" name="gpsd[location]" id = "gpsd_location" > <br/>
+                lat : <input type = "text" name="gpsd[lat]" id = "gpsd_lat" > <br/>
+                lng : <input type = "text" name="gpsd[lng]" id = "gpsd_lng" > <br/>
+                Device : <input type = "text" name="gpsd[device_id]" id = "gpsd_device_id" > <br/>
+                Engine Status : <input type = "checkbox" name="gpsd[estatus]" id = "gpsd_estatus" > <br/>
+                Alaram : <input type = "checkbox" name="gpsd[alaram]" id = "gpsd_alaram" > <br/>
+                <input type = "submit" value = "Add" >
+            </form>
+            <ul id="gpsds"></ul>
+        </div>
+    </body>
+    
+</html>
